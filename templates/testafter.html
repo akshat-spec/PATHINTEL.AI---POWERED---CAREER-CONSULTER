@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Result</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --card: #121212;
+            --text: #fff;
+            --sub: #a1a1aa;
+            --accent: #d946ef;
+            --accent-dim: rgba(217, 70, 239, 0.1);
+        }
+
+        body.light-mode {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --sub: #64748b;
+            --accent: #4f46e5;
+            --accent-dim: rgba(79, 70, 229, 0.1);
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .close-btn {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        /* HERO AREA */
+        .result-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .pre-title {
+            font-size: 1.2rem;
+            color: var(--sub);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .role-title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        body.light-mode .role-title {
+            background: linear-gradient(135deg, #1e293b 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .confidence-tag {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 20px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 10px 20px -5px var(--accent-dim);
+        }
+
+        /* DETAILS GRID */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 800px;
+            width: 100%;
+            margin-top: 50px;
+            text-align: left;
+        }
+
+        .detail-card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        body.light-mode .detail-card {
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        h3 {
+            margin-top: 0;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        ul.checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--sub);
+            display: flex;
+            gap: 10px;
+        }
+
+        body.light-mode ul.checklist li {
+            border-bottom: 1px solid #eee;
+        }
+
+        ul.checklist li i {
+            color: var(--accent);
+            margin-top: 4px;
+        }
+
+        .cta-area {
+            margin: 50px 0;
+        }
+
+        .btn {
+            background: var(--text);
+            color: var(--bg);
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        @media(max-width: 768px) {
+            .role-title {
+                font-size: 3rem;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="/" class="logo">PathIntel.ai</a>
+        <a href="/" class="close-btn"><i class="fas fa-times"></i></a>
+    </header>
+
+    <div class="result-wrapper">
+        <div class="pre-title">Based on your skills, you are a</div>
+        <h1 class="role-title" id="roleText">...</h1>
+        <div class="confidence-tag" id="confText">Confidence: 0%</div>
+
+        <div class="details-grid">
+            <!-- Card 1: Description -->
+            <div class="detail-card">
+                <h3><i class="fas fa-user-astronaut"></i> Why this role?</h3>
+                <p id="descText" style="color: var(--sub); line-height: 1.6;">
+                    Loading analysis...
+                </p>
+            </div>
+
+            <!-- Card 2: Next Steps -->
+            <div class="detail-card">
+                <h3><i class="fas fa-list-check"></i> Recommended Next Steps</h3>
+                <ul class="checklist" id="todoList">
+                    <!-- JS fills this -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="cta-area">
+            <a href="/" class="btn">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
+
+        // --- KNOWLEDGE BASE ---
+        const CAREER_DATA = {
+            "Software Developer": {
+                text: "Your responses indicate a balanced understanding of coding, logic, and system architecture. You have the mindset of a builder.",
+                steps: ["Build a portfolio on GitHub", "Master one stack (e.g., MERN)", "Contribute to Open Source"]
+            },
+            "Data Scientist": {
+                text: "You show an aptitude for statistics, patterns, and logic. You prefer evidence over intuition.",
+                steps: ["Master Python & SQL", "Learn Scikit-Learn/TensorFlow", "Complete a Kaggle competition"]
+            },
+            "Network Engineer": {
+                text: "You understand how systems connect. You likely scored high in networking and troubleshooting.",
+                steps: ["Get CCNA Certified", "Lab with Cisco Packet Tracer", "Learn Cloud Networking (AWS/Azure)"]
+            },
+            "Database Administrator": {
+                text: "You value data integrity and structure. You likely prefer backend logic over frontend design.",
+                steps: ["Deep dive into SQL optimization", "Learn NoSQL (MongoDB)", "Study Data Warehousing"]
+            },
+            "Cyber Security": {
+                text: "You have a defensive mindset and an eye for vulnerabilities.",
+                steps: ["Learn Linux Ops", "Study OWASP Top 10", "Try HackTheBox or TryHackMe"]
+            }
+        };
+
+        const DEFAULT_DATA = {
+            text: "You have a versatile skill set that could adapt to multiple tech roles. Keep exploring to find your niche.",
+            steps: ["Identify your strongest skill", "Build a small project", "Network on LinkedIn"]
+        };
+
+        // --- POPULATE ---
+        const data = JSON.parse(sessionStorage.getItem('skillResult'));
+
+        if (data) {
+            const role = data.role;
+            document.getElementById('roleText').innerText = role;
+            document.getElementById('confText').innerText = `AI Confidence: ${data.confidence}%`;
+
+            // Lookup info
+            // Fuzzy match keys (e.g., "Software Developer" matches "Developer")
+            let info = CAREER_DATA[role] || DEFAULT_DATA;
+            // If direct match fails, try partial
+            if (info === DEFAULT_DATA) {
+                const key = Object.keys(CAREER_DATA).find(k => role.includes(k));
+                if (key) info = CAREER_DATA[key];
+            }
+
+            document.getElementById('descText').innerText = info.text;
+
+            document.getElementById('todoList').innerHTML = info.steps.map(step =>
+                `<li><i class="fas fa-check-circle"></i> ${step}</li>`
+            ).join('');
+
+        } else {
+            document.getElementById('roleText').innerText = "Error";
+            document.getElementById('descText').innerText = "No result data found.";
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Assessment | PathIntel.ai</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- TOKENS --- */
+        :root {
+            /* DARK */
+            --bg-base: #050505;
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-main: #fff;
+            --text-sub: #9ca3af;
+            --primary: #c026d3;
+            /* Fuchsia */
+            --primary-bg: rgba(192, 38, 211, 0.2);
+            --header-bg: rgba(0, 0, 0, 0.7);
+        }
+
+        body.light-mode {
+            /* LIGHT */
+            --bg-base: #f1f5f9;
+            --bg-glass: #ffffff;
+            --border-glass: #e2e8f0;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --primary: #4f46e5;
+            --primary-bg: #e0e7ff;
+            --header-bg: #4f46e5;
+        }
+
+        /* --- BASE --- */
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-base);
+            color: var(--text-main);
+            margin: 0;
+            padding-bottom: 100px;
+        }
+
+        /* --- HEADER --- */
+        header {
+            height: 70px;
+            padding: 0 5%;
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* --- FORM CONTAINER --- */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-sub);
+        }
+
+        /* --- QUESTION CARDS --- */
+        .question-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+
+        .question-card:hover {
+            border-color: var(--primary);
+        }
+
+        .q-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* --- CHIP / RADIO BUTTON STYLING --- */
+        .options-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* The actual radio input is hidden */
+        .options-wrapper input[type="radio"] {
+            display: none;
+        }
+
+        /* The label acts as the button */
+        .chip {
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        body.light-mode .chip {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .chip:hover {
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* SELECTED STATE */
+        input[type="radio"]:checked+.chip {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+        }
+
+        /* --- FOOTER / SUBMIT --- */
+        .fab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: var(--bg-base);
+            border-top: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 15px 60px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="/" class="logo">PathIntel.ai</a>
+        <button class="theme-btn" id="themeBtn"><i class="fas fa-moon"></i></button>
+    </header>
+
+    <div class="container">
+        <div class="header-text">
+            <h1>Skill Assessment</h1>
+            <p class="subtitle">Rate your proficiency honestly to let our AI build your profile.</p>
+        </div>
+
+        <form id="testForm">
+            <!-- Rendered via JS for cleanliness -->
+            <div id="quizList"></div>
+        </form>
+    </div>
+
+    <div class="fab-bar">
+        <button type="submit" form="testForm" class="submit-btn">Analyze My Skills <i
+                class="fas fa-arrow-right"></i></button>
+    </div>
+
+    <script>
+        // --- THEME ---
+        const btn = document.getElementById('themeBtn');
+        const updateTheme = (t) => {
+            document.body.className = t === 'light' ? 'light-mode' : '';
+            btn.innerHTML = t === 'light' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        };
+        btn.onclick = () => {
+            const newTheme = document.body.classList.contains('light-mode') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            updateTheme(newTheme);
+        };
+        updateTheme(localStorage.getItem('theme') || 'dark');
+
+        // --- RENDER FORM ---
+        const questions = [
+            "Database Fundamentals", "Computer Architecture", "Distributed Computing",
+            "Cyber Security", "Computer Networking", "Software Development",
+            "Programming Skills", "Project Management", "Computer Forensics",
+            "Technical Communication", "AI & ML", "Software Engineering",
+            "Business Analysis", "Communication Skills", "Data Science",
+            "Troubleshooting", "Graphics Designing"
+        ];
+
+        const levels = [
+            { label: "Poor", val: 2 },
+            { label: "Beginner", val: 3 },
+            { label: "Average", val: 5 },
+            { label: "Intermed.", val: 7 },
+            { label: "Pro", val: 9 }
+        ];
+
+        const quizList = document.getElementById('quizList');
+
+        questions.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            let html = `<label class="q-title">${idx + 1}. ${q}</label>`;
+            html += `<div class="options-wrapper">`;
+
+            levels.forEach(lvl => {
+                // Unique ID for label connection
+                const id = `q${idx}_${lvl.val}`;
+                // Pre-check 'Average' (val 5)
+                const checked = lvl.val === 5 ? 'checked' : '';
+
+                html += `
+                <input type="radio" name="q${idx}" id="${id}" value="${lvl.val}" ${checked}>
+                <label class="chip" for="${id}">${lvl.label}</label>
+            `;
+            });
+
+            html += `</div>`;
+            card.innerHTML = html;
+            quizList.appendChild(card);
+        });
+
+        // --- SUBMIT LOGIC ---
+        document.getElementById('testForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const responses = [];
+
+            for (let i = 0; i < questions.length; i++) {
+                const el = document.querySelector(`input[name="q${i}"]:checked`);
+                if (el) responses.push(parseInt(el.value));
+                else responses.push(5); // Fallback
+            }
+
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            try {
+                const res = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ responses })
+                });
+                const data = await res.json();
+
+                if (data.role) {
+                    sessionStorage.setItem('skillResult', JSON.stringify(data));
+                    window.location.href = '/testafter';
+                } else {
+                    alert("Error: " + (data.error || "Unknown"));
+                    submitBtn.innerText = 'Try Again';
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Connection Failed");
+                submitBtn.innerText = 'Try Again';
+            }
+        };
+    </script>
+</body>
+
+</html>

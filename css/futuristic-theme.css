@@ -1,0 +1,599 @@
+/*
+=========================================================================
+PATHINTEL.AI FUTURISTIC THEME
+CSS-Only Visual Transformation
+No PHP/HTML modifications - Pure stylesheet override
+=========================================================================
+*/
+
+/* ========== GOOGLE FONTS IMPORT ========== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700;900&display=swap');
+
+/* ========== CSS VARIABLES - FUTURISTIC TECH PALETTE ========== */
+:root {
+    /* Global Architect Tokens */
+    --bg-base: #050505;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-main: #ffffff;
+    --text-sub: #a1a1aa;
+    --accent: #d946ef;
+    --accent-glow: 0 0 20px rgba(217, 70, 239, 0.4);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --header-bg: rgba(5, 5, 5, 0.8);
+
+    /* Space Colors (Legacy/Helper) */
+    --space-dark: #0a0e27;
+    --space-medium: #1a1f3a;
+    --space-light: #2a2f4a;
+
+    /* Neon Accents (Synced with Architect) */
+    --cyan-neon: #d946ef;
+    /* Synced to pink/purple accent */
+    --purple-neon: #b026ff;
+    --matrix-green: #10b981;
+    --pink-neon: #ff006e;
+
+    /* Shadows & Glows */
+    --glow-cyan: 0 0 20px rgba(217, 70, 239, 0.6), 0 0 40px rgba(217, 70, 239, 0.3);
+    --glow-purple: 0 0 20px rgba(176, 38, 255, 0.6), 0 0 40px rgba(176, 38, 255, 0.3);
+    --glow-mixed: 0 0 30px rgba(217, 70, 239, 0.5), 0 0 60px rgba(176, 38, 255, 0.3);
+
+    /* Gradients */
+    --gradient-holographic: linear-gradient(135deg, var(--accent) 0%, #b026ff 50%, #10b981 100%);
+    --gradient-space: radial-gradient(circle at 50% 10%, #2E023E 0%, #000000 100%);
+    --gradient-button: linear-gradient(90deg, var(--accent), var(--purple-neon));
+}
+
+/* ========== KEYFRAME ANIMATIONS ========== */
+
+/* 1. Pulse Glow - Breathing neon effect */
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow: var(--glow-cyan);
+    }
+
+    50% {
+        box-shadow: var(--glow-purple);
+    }
+}
+
+/* 2. Slide In Tech - Geometric entrance */
+@keyframes slideInTech {
+    from {
+        opacity: 0;
+        transform: translateX(-50px) skewX(-10deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) skewX(0);
+    }
+}
+
+/* 3. Data Flow - Streaming effect */
+@keyframes dataFlow {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+        filter: blur(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* 4. Hologram Flicker - Subtle shimmer */
+@keyframes hologramFlicker {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.85;
+    }
+}
+
+/* 5. Scanline - Retro-futuristic scan */
+@keyframes scanline {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+/* 6. Gradient Shift - Animated background */
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* 7. Float Animation */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ========== BASE OVERRIDES ========== */
+
+body {
+    background: var(--gradient-space) !important;
+    background-size: 200% 200% !important;
+    animation: gradientShift 15s ease infinite;
+    font-family: 'Inter', -apple-system, sans-serif !important;
+    color: #e0e0e0 !important;
+    position: relative;
+}
+
+/* Tech Grid Overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 217, 255, 0.03) 2px, rgba(0, 217, 255, 0.03) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(176, 38, 255, 0.03) 2px, rgba(176, 38, 255, 0.03) 4px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+}
+
+body>* {
+    position: relative;
+    z-index: 1;
+}
+
+/* ========== HEADER - GLASSMORPHISM NAV ========== */
+
+#header {
+    background: rgba(10, 14, 39, 0.85) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37) !important;
+    animation: slideInDown 0.8s ease-out;
+}
+
+#header .navbar-brand .logo {
+    font-family: 'Orbitron', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 28px !important;
+    background: var(--gradient-holographic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none !important;
+    animation: hologramFlicker 3s ease-in-out infinite;
+}
+
+#header .main-menu li a {
+    color: #e0e0e0 !important;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#header .main-menu li a:hover {
+    color: var(--cyan-neon) !important;
+    text-shadow: var(--glow-cyan);
+    background-color: rgba(0, 217, 255, 0.1) !important;
+}
+
+/* ========== HERO SECTION ========== */
+
+.hero-area {
+    animation: fadeIn 1.2s ease-out !important;
+}
+
+.hero-area h1 {
+    font-family: 'Orbitron', sans-serif !important;
+    font-weight: 900 !important;
+    animation: slideInTech 1s cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow:
+        0 0 10px rgba(0, 217, 255, 0.5),
+        0 0 20px rgba(176, 38, 255, 0.3) !important;
+}
+
+.hero-area .lead {
+    animation: dataFlow 1.2s ease-out 0.3s both;
+}
+
+/* ========== BUTTONS - NEON GLOW ========== */
+
+.main-button,
+.btn-primary,
+button[type="submit"] {
+    background: var(--gradient-button) !important;
+    border: 2px solid transparent !important;
+    box-shadow: var(--glow-mixed) !important;
+    font-family: 'Orbitron', sans-serif !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow;
+}
+
+.main-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.main-button:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+.main-button:hover,
+.btn-primary:hover {
+    transform: scale(1.05) translateY(-3px) !important;
+    box-shadow:
+        0 0 40px rgba(0, 217, 255, 0.8),
+        0 0 80px rgba(176, 38, 255, 0.6),
+        0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    border-color: var(--cyan-neon) !important;
+}
+
+/* ========== GLASSMORPHISM CARDS ========== */
+
+.feature,
+.course,
+.glass-card,
+.wrapper {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(10px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.37),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform;
+}
+
+.course,
+.feature {
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.course:hover,
+.feature:hover,
+.glass-card:hover {
+    transform: translateY(-10px) scale(1.02) !important;
+    box-shadow:
+        0 0 30px rgba(0, 217, 255, 0.4),
+        0 15px 50px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    border-color: var(--cyan-neon) !important;
+}
+
+/* Staggered animation delays */
+.course:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.course:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.course:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.course:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.feature:nth-child(1) {
+    animation-delay: 0.15s;
+}
+
+.feature:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.feature:nth-child(3) {
+    animation-delay: 0.45s;
+}
+
+/* ========== FEATURE ICONS - NEON GLOW ========== */
+
+.feature .feature-icon {
+    background: rgba(0, 217, 255, 0.1) !important;
+    border: 2px solid var(--cyan-neon) !important;
+    color: var(--cyan-neon) !important;
+    box-shadow:
+        var(--glow-cyan),
+        inset 0 0 20px rgba(0, 217, 255, 0.2) !important;
+    backdrop-filter: blur(10px);
+    animation: float 3s ease-in-out infinite;
+}
+
+.feature:hover .feature-icon {
+    transform: scale(1.2) rotate(360deg) !important;
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.8) !important;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ========== SECTION HEADERS - HOLOGRAPHIC ========== */
+
+.section-header h2,
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Orbitron', sans-serif !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    position: relative;
+    animation: dataFlow 0.8s ease-out;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--gradient-holographic);
+    box-shadow: var(--glow-mixed);
+    animation: scanline 3s linear infinite;
+}
+
+/* ========== BLOG/KNOWLEDGE LIST ========== */
+
+.list li,
+.list-admin li {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--glass-border) !important;
+    backdrop-filter: blur(10px);
+    color: #e0e0e0 !important;
+    animation: fadeInLeft 0.5s ease-out both;
+}
+
+.list li:nth-child(odd) {
+    animation-delay: 0.1s;
+}
+
+.list li:nth-child(even) {
+    animation-delay: 0.2s;
+}
+
+.list li:hover {
+    transform: translateX(10px) !important;
+    border-color: var(--cyan-neon) !important;
+    box-shadow: var(--glow-cyan) !important;
+}
+
+.list li h2 {
+    color: var(--cyan-neon) !important;
+}
+
+.list li i {
+    background: var(--gradient-button) !important;
+    box-shadow: var(--glow-purple);
+}
+
+/* ========== FORMS - FUTURISTIC INPUTS ========== */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+.form-control {
+    background: rgba(10, 14, 39, 0.6) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: #e0e0e0 !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease !important;
+}
+
+input:focus,
+textarea:focus,
+.form-control:focus {
+    border-color: var(--cyan-neon) !important;
+    box-shadow: var(--glow-cyan) !important;
+    background: rgba(10, 14, 39, 0.8) !important;
+    outline: none !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(224, 224, 224, 0.5) !important;
+}
+
+/* ========== TAGS - NEON CHIPS ========== */
+
+.tag {
+    background: rgba(0, 217, 255, 0.1) !important;
+    border: 1px solid var(--cyan-neon) !important;
+    color: var(--cyan-neon) !important;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.tag:hover {
+    background: var(--cyan-neon) !important;
+    color: var(--space-dark) !important;
+    transform: scale(1.1) translateY(-2px) !important;
+    box-shadow: var(--glow-cyan) !important;
+}
+
+/* ========== SECTIONS - TRANSPARENT BACKGROUNDS ========== */
+
+#why-us,
+#about,
+#contact,
+#blog,
+#courses {
+    background: rgba(10, 14, 39, 0.3) !important;
+    backdrop-filter: blur(5px);
+}
+
+/* ========== FOOTER ========== */
+
+footer,
+#footer {
+    background: rgba(10, 14, 39, 0.9) !important;
+    border-top: 1px solid var(--glass-border) !important;
+    backdrop-filter: blur(20px);
+    color: #a0a0a0 !important;
+}
+
+/* ========== CHATBOT INTEGRATION ========== */
+
+.chatbot-toggle {
+    background: var(--gradient-button) !important;
+    box-shadow: var(--glow-mixed) !important;
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.chatbot-window {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+}
+
+.chatbot-header {
+    background: var(--gradient-button) !important;
+}
+
+/* ========== DROPDOWN MENUS ========== */
+
+.dropdown-content {
+    background: rgba(10, 14, 39, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dropdown-content a:hover {
+    background: rgba(0, 217, 255, 0.2) !important;
+    color: var(--cyan-neon) !important;
+}
+
+/* ========== RESPONSIVE - PERFORMANCE OPTIMIZATION ========== */
+
+@media (max-width: 768px) {
+
+    /* Disable heavy effects on mobile */
+    body::before {
+        opacity: 0.3;
+    }
+
+    .feature .feature-icon {
+        animation: none;
+    }
+
+    .main-button {
+        animation: none;
+    }
+
+    * {
+        backdrop-filter: none !important;
+    }
+
+    .glass-card,
+    .feature,
+    .course {
+        background: rgba(26, 31, 58, 0.85) !important;
+    }
+}
+
+/* Touch devices - different hover behavior */
+@media (hover: none) {
+
+    .course:hover,
+    .feature:hover {
+        transform: none !important;
+    }
+
+    .course:active,
+    .feature:active {
+        transform: scale(0.98) !important;
+    }
+}
+
+/* ========== UTILITY ANIMATIONS ========== */
+
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ========== PERFORMANCE HINTS ========== */
+
+.main-button,
+.course,
+.feature,
+.feature-icon {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    /* Force GPU acceleration */
+}
+
+/* ========== PRINT STYLES ========== */
+
+@media print {
+
+    body::before,
+    .chatbot-toggle,
+    .chatbot-window {
+        display: none !important;
+    }
+
+    * {
+        animation: none !important;
+        box-shadow: none !important;
+    }
+}

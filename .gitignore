@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# PHP / Web
+*.log
+uploads/
+node_modules/
+
+# Models & Large Files (Optional, but usually pkl and datasets are kept if small)
+# *.pkl
+# *.csv
+
+# OS files
+.DS_Store
+Thumbs.db

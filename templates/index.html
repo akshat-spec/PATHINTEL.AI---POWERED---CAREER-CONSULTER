@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Hub - Dream Job Matcher</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN TOKENS --- */
+        :root {
+            --bg-base: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-sub: #a1a1aa;
+            --accent: #d946ef;
+            --accent-glow: 0 0 20px rgba(217, 70, 239, 0.4);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --header-bg: rgba(5, 5, 5, 0.8);
+        }
+
+        body.light-mode {
+            --bg-base: #f8fafc;
+            --glass-bg: #ffffff;
+            --glass-border: rgba(0, 0, 0, 0.05);
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --accent: #6366f1;
+            --header-bg: rgba(248, 250, 252, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .ambient-orb {
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(60px);
+            animation: pulseOrb 10s infinite alternate;
+        }
+
+        @keyframes pulseOrb {
+            0% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            transform: rotate(15deg);
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        body.light-mode h1 {
+            background: linear-gradient(135deg, var(--accent), #6366f1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-sub);
+            max-width: 600px;
+            margin-bottom: 4rem;
+            line-height: 1.6;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: var(--accent-glow);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            transition: 0.4s;
+        }
+
+        .card:hover .icon-box {
+            background: var(--accent);
+            color: #fff;
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .card p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.92);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            margin: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .input-group input[type="file"] {
+            display: none;
+        }
+
+        .input-group label[for="jobResumeInput"] {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed var(--glass-border);
+            padding: 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+            display: block;
+        }
+
+        .input-group label[for="jobResumeInput"]:hover {
+            border-color: var(--accent);
+            background: rgba(217, 70, 239, 0.1);
+        }
+
+        .file-name {
+            display: block;
+            margin-top: 0.5rem;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+        }
+
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .input-group small {
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: var(--accent-glow);
+            font-family: inherit;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(217, 70, 239, 0.5);
+        }
+
+        .loader-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .spinner-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ambient-orb"></div>
+
+    <header>
+        <a href="/" class="logo"><i class="fas fa-brain"></i> PathIntel.ai</a>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+        </nav>
+        <button class="theme-toggle" id="themeBtn"><i class="fas fa-moon"></i></button>
+    </header>
+
+    <div class="hero-container">
+        <h1>Unlock Your Potential<br>With AI Analysis</h1>
+        <p class="subtitle">Leverage advanced machine learning to analyze your resume or assess your skills manually to
+            find the perfect career path.</p>
+
+        <div class="options-grid">
+            <!-- Card 1: Resume Analysis -->
+            <div class="card" onclick="document.getElementById('hiddenResumeInput').click()">
+                <div class="icon-box"><i class="fas fa-file-invoice"></i></div>
+                <h3>Resume Analysis</h3>
+                <p>Upload your CV (PDF/DOCX). Our AI scans for skills, experience, and formatting to predict your best
+                    role.</p>
+            </div>
+            <input type="file" id="hiddenResumeInput" accept=".pdf,.docx" style="display:none">
+
+            <!-- Card 2: Skill Assessment -->
+            <a href="/hometest" class="card">
+                <div class="icon-box"><i class="fas fa-laptop-code"></i></div>
+                <h3>Skill Assessment</h3>
+                <p>Take our 17-point interactive technical questionnaire to gauge your aptitude in various domains.</p>
+            </a>
+
+            <!-- Card 3: Dream Job Matcher -->
+            <div class="card" id="jobProbCard">
+                <div class="icon-box"><i class="fas fa-star"></i></div>
+                <h3>Dream Job Matcher</h3>
+                <p>Upload your resume and tell us your dream job. Get an AI-calculated probability score with
+                    personalized insights.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Job Probability Feature -->
+    <div class="modal-overlay" id="jobProbModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeJobModal()">&times;</button>
+            <h2><i class="fas fa-target"></i> Dream Job Match Calculator</h2>
+
+            <div class="input-group">
+                <label for="jobResumeInput">
+                    <i class="fas fa-file-upload"></i> Upload Your Resume
+                </label>
+                <input type="file" id="jobResumeInput" accept=".pdf,.docx" required>
+                <span class="file-name" id="jobFileName">No file selected</span>
+            </div>
+
+            <div class="input-group">
+                <label for="targetJobInput">
+                    <i class="fas fa-star"></i> What's Your Dream Job?
+                </label>
+                <input type="text" id="targetJobInput"
+                    placeholder="e.g., Machine Learning Engineer, Senior Full Stack Developer" required>
+                <small>💡 Tip: Be specific! Include technologies or specializations for accurate results.</small>
+            </div>
+
+            <button class="calculate-btn" onclick="calculateJobProbability()">
+                <i class="fas fa-calculator"></i> Calculate Match Probability
+            </button>
+        </div>
+    </div>
+
+    <div class="loader-overlay" id="loadingScreen">
+        <div class="spinner-ring"></div>
+        <p style="margin-top: 20px; color: var(--text-sub); letter-spacing: 1px;">PROCESSING DATA...</p>
+    </div>
+
+    <script>
+        // --- THEME ENGINE ---
+        const btn = document.getElementById('themeBtn');
+        const icon = btn.querySelector('i');
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+                icon.className = 'fas fa-sun';
+            } else {
+                document.body.classList.remove('light-mode');
+                icon.className = 'fas fa-moon';
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        setTheme(localStorage.getItem('theme') || 'dark');
+
+        btn.onclick = () => {
+            const isLight = document.body.classList.contains('light-mode');
+            setTheme(isLight ? 'dark' : 'light');
+        };
+
+        // --- FEATURE 1: RESUME UPLOAD ---
+        const fileInput = document.getElementById('hiddenResumeInput');
+        const loader = document.getElementById('loadingScreen');
+
+        fileInput.addEventListener('change', async (e) => {
+            if (e.target.files.length === 0) return;
+
+            loader.style.display = 'flex';
+
+            const formData = new FormData();
+            formData.append('file', e.target.files[0]);
+
+            try {
+                const res = await fetch('/analyze_resume', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    sessionStorage.setItem('careerResult', JSON.stringify(data));
+                    window.location.href = '/result';
+                } else {
+                    alert('Error: ' + data.error);
+                    loader.style.display = 'none';
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Server Connection Failed.');
+                loader.style.display = 'none';
+            }
+        });
+
+        // --- FEATURE 3: DREAM JOB PROBABILITY ---
+
+        // Open Modal
+        document.getElementById('jobProbCard').addEventListener('click', function () {
+            document.getElementById('jobProbModal').style.display = 'flex';
+        });
+
+        // Close Modal
+        function closeJobModal() {
+            document.getElementById('jobProbModal').style.display = 'none';
+            document.getElementById('jobResumeInput').value = '';
+            document.getElementById('targetJobInput').value = '';
+            document.getElementById('jobFileName').textContent = 'No file selected';
+        }
+
+        // File selection display
+        document.getElementById('jobResumeInput').addEventListener('change', function (e) {
+            const fileName = e.target.files[0]?.name || 'No file selected';
+            document.getElementById('jobFileName').textContent = fileName;
+        });
+
+        // Calculate Probability
+        async function calculateJobProbability() {
+            const fileInput = document.getElementById('jobResumeInput');
+            const dreamJob = document.getElementById('targetJobInput').value.trim();
+
+            if (!fileInput.files[0]) {
+                alert('Please upload your resume');
+                return;
+            }
+
+            if (!dreamJob) {
+                alert('Please enter your dream job');
+                return;
+            }
+
+            loader.style.display = 'flex';
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('targetJob', dreamJob);
+
+            try {
+                const response = await fetch('/predict-job-probability', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Store result and redirect to new results page
+                    sessionStorage.setItem('jobProbResult', JSON.stringify(data));
+                    window.location.href = '/job-result';
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Server connection failed. Please try again.');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
