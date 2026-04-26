@@ -1,0 +1,183 @@
+/* DESIGN DECISION: A foundation of 'Structured Weightlessness' using an 8pt grid and a NASA-inspired research journal aesthetic. */
+
+:root {
+    /* Atmosphere: Deep Space Navy */
+    --color-bg-base: #0A0E1A;
+    --color-bg-surface: #121826;
+    --color-bg-glass: rgba(18, 24, 38, 0.7);
+    
+    /* Text */
+    --color-text-primary: #F8FAFC;
+    --color-text-secondary: #94A3B8;
+    --color-text-muted: #64748B;
+    
+    /* Accent: cool cyan */
+    --color-accent: #00D4FF;
+    --color-accent-hover: #00BAE0;
+    --color-accent-glow: rgba(0, 212, 255, 0.3);
+    
+    /* Borders */
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-bright: rgba(255, 255, 255, 0.15);
+    
+    /* Spacing: 8pt grid */
+    --space-8: 8px;
+    --space-16: 16px;
+    --space-24: 24px;
+    --space-32: 32px;
+    --space-48: 48px;
+    --space-64: 64px;
+    --space-96: 96px;
+    
+    /* Typography */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Sora', sans-serif;
+    --font-ui: 'Sora', sans-serif;
+    
+    /* Effects */
+    --shadow-soft: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+    --shadow-float: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+    --transition-glide: all 400ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* --- BASE STYLES --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition-glide);
+}
+
+/* --- GRID SYSTEM --- */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-24);
+}
+
+.asymmetric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-32);
+}
+
+@media (max-width: 768px) {
+    .asymmetric-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- UI COMPONENTS --- */
+
+/* Floating Module */
+.float-card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px; /* Structured, not bubbly */
+    padding: var(--space-32);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-glide);
+    position: relative;
+    overflow: hidden;
+}
+
+.float-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-float);
+    border-color: var(--color-accent);
+}
+
+/* Glass Header */
+.glass-nav {
+    background: var(--color-bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Accent Button */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    background: transparent;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    padding: var(--space-16) var(--space-32);
+    font-family: var(--font-ui);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: var(--transition-glide);
+    position: relative;
+}
+
+.btn-primary:hover {
+    background: var(--color-accent);
+    color: var(--color-bg-base);
+    box-shadow: 0 0 20px var(--color-accent-glow);
+}
+
+.btn-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--color-accent-glow);
+}
+
+/* --- MOTION & ANIMATION --- */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reveal {
+    animation: fadeInSlideUp 800ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    opacity: 0;
+}
+
+.stagger-1 { animation-delay: 100ms; }
+.stagger-2 { animation-delay: 200ms; }
+.stagger-3 { animation-delay: 300ms; }
+
+/* Parallax Background */
+.parallax-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.3);
+}

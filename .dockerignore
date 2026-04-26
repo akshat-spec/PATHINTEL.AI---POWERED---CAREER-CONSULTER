@@ -1,0 +1,16 @@
+.git
+.gitignore
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+*.sql
+frontend/
+*.pkl
+*.csv
+archive.zip
+archive_extracted/
+node_modules/

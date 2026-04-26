@@ -1,0 +1,425 @@
+/*
+==============================================
+FUTURISTIC THEME SYSTEM
+Dark Theme: Black + Purple
+Light Theme: White + Blue
+==============================================
+*/
+
+/* ========== ROOT VARIABLES - LIGHT THEME (DEFAULT - ORIGINAL DESIGN) ========== */
+:root {
+    /* Keep original colors - no changes to light mode */
+    --primary-color: #FF6700;
+    --primary-light: #ff8533;
+    --primary-lighter: #ffa366;
+    --primary-dark: #cc5200;
+
+    /* Background Colors - Original */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #EBEBEB;
+    --bg-overlay: rgba(10, 14, 39, 0.7);
+    --bg-glass: rgba(255, 255, 255, 0.1);
+
+    /* Text Colors - Original */
+    --text-primary: #374050;
+    --text-secondary: #798696;
+    --text-tertiary: #EBEBEB;
+    --text-inverse: #ffffff;
+
+    /* Accent Colors - Original */
+    --accent-gradient-1: #FF6700;
+    --accent-gradient-2: #ff8533;
+    --accent-gradient-3: #ffa366;
+
+    /* UI Elements - Original */
+    --border-color: #EBEBEB;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+    --shadow-glow: 0 0 20px rgba(255, 103, 0, 0.4);
+
+    /* Header - Original Purple */
+    --header-bg: rgb(120, 70, 167);
+    --header-text: #ffffff;
+
+    /* Cards - Original */
+    --card-bg: #ffffff;
+    --card-border: rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+
+    /* Buttons - Original */
+    --btn-primary-bg: #e7126b;
+    --btn-primary-hover: #ff00bf;
+    --btn-primary-text: #ffffff;
+
+    /* Forms - Original */
+    --input-bg: #ffffff;
+    --input-border: #EBEBEB;
+    --input-focus: #FF6700;
+
+    /* Animations */
+    --transition-speed: 0.3s;
+}
+
+/* ========== DARK THEME ========== */
+[data-theme="dark"] {
+    /* Brand Colors */
+    --primary-color: #9d4edd;
+    --primary-light: #c77dff;
+    --primary-lighter: #e0aaff;
+    --primary-dark: #7209b7;
+
+    /* Background Colors */
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #13131a;
+    --bg-tertiary: #1a1a24;
+    --bg-overlay: rgba(10, 10, 15, 0.95);
+    --bg-glass: rgba(157, 78, 221, 0.05);
+
+    /* Text Colors */
+    --text-primary: #f8f9fa;
+    --text-secondary: #cbd5e0;
+    --text-tertiary: #a0aec0;
+    --text-inverse: #0a0a0f;
+
+    /* Accent Colors */
+    --accent-gradient-1: #7209b7;
+    --accent-gradient-2: #9d4edd;
+    --accent-gradient-3: #c77dff;
+
+    /* UI Elements */
+    --border-color: #2d2d3a;
+    --shadow-sm: 0 2px 8px rgba(157, 78, 221, 0.15);
+    --shadow-md: 0 4px 16px rgba(157, 78, 221, 0.25);
+    --shadow-lg: 0 8px 32px rgba(157, 78, 221, 0.35);
+    --shadow-glow: 0 0 30px rgba(199, 125, 255, 0.5);
+
+    /* Header */
+    --header-bg: linear-gradient(135deg, #0a0a0f 0%, #1a0033 50%, #2d004d 100%);
+    --header-text: #f8f9fa;
+
+    /* Cards */
+    --card-bg: rgba(26, 26, 36, 0.8);
+    --card-border: rgba(157, 78, 221, 0.2);
+    --card-hover-shadow: 0 12px 40px rgba(157, 78, 221, 0.4);
+
+    /* Buttons */
+    --btn-primary-bg: linear-gradient(135deg, #7209b7 0%, #9d4edd 100%);
+    --btn-primary-hover: linear-gradient(135deg, #5a0794 0%, #8339c7 100%);
+    --btn-primary-text: #ffffff;
+
+    /* Forms */
+    --input-bg: rgba(26, 26, 36, 0.6);
+    --input-border: #3d3d52;
+    --input-focus: #9d4edd;
+
+    /* Animations */
+    --transition-speed: 0.3s;
+}
+
+/* ========== BASE THEME STYLES ========== */
+body {
+    /* No background - let images show */
+    color: var(--text-primary);
+    transition: color var(--transition-speed) ease;
+}
+
+/* Remove animated gradient - it covers images */
+
+
+
+/* ========== THEME TOGGLE BUTTON ========== */
+.theme-toggle {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed) ease;
+    margin-left: 15px;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: var(--shadow-glow);
+    border-color: var(--primary-color);
+}
+
+.theme-toggle svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-primary);
+    transition: all var(--transition-speed) ease;
+}
+
+.theme-toggle:hover svg {
+    fill: var(--primary-color);
+}
+
+/* ========== HEADER STYLES ========== */
+#header {
+    background: var(--header-bg) !important;
+    box-shadow: var(--shadow-md);
+    transition: background var(--transition-speed) ease;
+}
+
+#header .navbar-brand .logo {
+    color: var(--header-text) !important;
+}
+
+#header .main-menu li a {
+    color: var(--header-text) !important;
+    transition: all var(--transition-speed) ease;
+}
+
+#header .main-menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: var(--shadow-glow);
+}
+
+/* ========== GLASSMORPHISM CARDS ========== */
+.glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-speed) ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--primary-color);
+}
+
+/* ========== BUTTONS ========== */
+.main-button {
+    background: var(--btn-primary-bg) !important;
+    border: 2px solid transparent !important;
+    color: var(--btn-primary-text) !important;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-speed) ease !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.main-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.main-button:hover {
+    background: var(--btn-primary-hover) !important;
+    box-shadow: var(--shadow-glow) !important;
+    transform: translateY(-2px);
+    border-color: var(--btn-primary-hover) !important;
+}
+
+/* ========== FEATURE ICONS ========== */
+.feature .feature-icon {
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    transition: all var(--transition-speed) ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.feature:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ========== SECTION STYLES ========== */
+.section {
+    /* No background-color by default - let images show */
+    transition: background-color var(--transition-speed) ease;
+}
+
+/* Add background only to sections that need it */
+#why-us,
+#about,
+.section:not(.hero-area):not(#cta):not(#contact-cta) {
+    background-color: var(--bg-primary);
+}
+
+.section-header h2 {
+    color: var(--text-primary);
+    position: relative;
+    display: inline-block;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-gradient-1), var(--accent-gradient-2), var(--accent-gradient-3));
+    border-radius: 2px;
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) scaleX(1.2);
+    }
+}
+
+/* ========== COURSE CARDS ========== */
+.course {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all var(--transition-speed) ease;
+    border: 1px solid var(--card-border);
+}
+
+.course:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--card-hover-shadow);
+}
+
+.course-img {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.course-img::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--accent-gradient-1), var(--accent-gradient-2));
+    opacity: 0;
+    transition: opacity var(--transition-speed) ease;
+}
+
+.course:hover .course-img::after {
+    opacity: 0.3;
+}
+
+/* ========== BLOG/KNOWLEDGE NETWORK ========== */
+.list li {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    transition: all var(--transition-speed) ease;
+}
+
+.list li:hover {
+    transform: translateX(5px);
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--primary-color);
+}
+
+.list li h2 {
+    color: var(--text-primary);
+}
+
+.list li p {
+    color: var(--text-secondary);
+}
+
+/* ========== FORMS ========== */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--text-primary) !important;
+    transition: all var(--transition-speed) ease;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--input-focus) !important;
+    box-shadow: 0 0 0 3px var(--bg-glass), var(--shadow-glow);
+}
+
+/* ========== TAGS ========== */
+.tag {
+    background: var(--bg-glass);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color) !important;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all var(--transition-speed) ease;
+    display: inline-block;
+    margin: 5px;
+}
+
+.tag:hover {
+    background: var(--primary-color);
+    color: var(--text-inverse) !important;
+    transform: scale(1.05);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ========== WHITE TEXT ========== */
+.white-text {
+    color: var(--text-inverse) !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ========== HERO AREA ========== */
+.hero-area .bg-image.overlay::after {
+    background: var(--bg-overlay);
+    opacity: 0.7;
+}
+
+/* ========== FOOTER ========== */
+footer {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+/* ========== SMOOTH TRANSITIONS ========== */
+* {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: var(--transition-speed);
+    transition-timing-function: ease;
+}
+
+/* Prevent transition on page load */
+.preload * {
+    transition: none !important;
+}

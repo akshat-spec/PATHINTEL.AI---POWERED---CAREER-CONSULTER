@@ -1,0 +1,18 @@
+FROM php:8.2-apache
+
+# Install MySQLi extension for PHP
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+# Enable Apache mod_rewrite if needed (common for PHP apps)
+RUN a2enmod rewrite
+
+# Set the working directory to Apache's default public folder
+WORKDIR /var/www/html
+
+# Copy all project files into the container
+# We use a volume in docker-compose for development, 
+# but this is good for a base image.
+COPY . /var/www/html/
+
+# Expose port 80
+EXPOSE 80

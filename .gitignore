@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+*.pkl
+
+# PHP / Web
+*.log
+uploads/
+node_modules/
+
+# Data & Archives
+archive_extracted/
+*.zip
+*.tar.gz
+
+# OS files
+.DS_Store
+Thumbs.db

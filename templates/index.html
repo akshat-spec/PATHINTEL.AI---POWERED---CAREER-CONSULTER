@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Hub | PathIntel.ai</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* DESIGN DECISION: Structured Weightlessness design system for the AI Hub. 
+           Atmosphere: Deep Space Navy (#0A0E1A)
+           Typography: Playfair Display (Headings) + Sora (Body)
+        */
+        :root {
+            --color-bg-base: #0A0E1A;
+            --color-bg-surface: #121826;
+            --color-bg-glass: rgba(18, 24, 38, 0.7);
+            --color-text-primary: #F8FAFC;
+            --color-text-secondary: #94A3B8;
+            --color-accent: #00D4FF;
+            --color-accent-glow: rgba(0, 212, 255, 0.3);
+            --color-border: rgba(255, 255, 255, 0.08);
+            --space-32: 32px;
+            --transition-glide: all 400ms cubic-bezier(0.23, 1, 0.32, 1);
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Sora', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-bg-base);
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .ambient-orb {
+            position: fixed;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        header {
+            background: var(--color-bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            text-decoration: none;
+            text-transform: lowercase;
+            letter-spacing: -1px;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--color-text-primary);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--color-bg-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            padding: 3rem 2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-glide);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--color-accent);
+            box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .icon-box {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            color: var(--color-accent);
+            transition: var(--transition-glide);
+        }
+
+        .card:hover .icon-box {
+            background: var(--color-accent);
+            color: var(--color-bg-base);
+        }
+
+        .card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--color-bg-surface);
+            border: 1px solid var(--color-border);
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            color: var(--color-text-muted);
+            cursor: pointer;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--color-text-primary);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-primary);
+            font-family: var(--font-body);
+            border-radius: 4px;
+        }
+
+        .btn-calculate {
+            width: 100%;
+            padding: 1rem;
+            background: var(--color-accent);
+            color: var(--color-bg-base);
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: var(--transition-glide);
+            border-radius: 4px;
+        }
+
+        .btn-calculate:hover {
+            box-shadow: 0 0 20px var(--color-accent-glow);
+        }
+
+        .loader-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--color-bg-base);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(0, 212, 255, 0.1);
+            border-top-color: var(--color-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal { animation: fadeInSlideUp 800ms cubic-bezier(0.23, 1, 0.32, 1) forwards; opacity: 0; }
+    </style>
+</head>
+
+<body>
+    <div class="ambient-orb"></div>
+
+    <header>
+        <a href="/" class="logo">PathIntel.ai</a>
+        <nav style="display: flex; gap: 2rem;">
+             <a href="/" style="color: var(--color-text-secondary); text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Home</a>
+             <a href="/hometest" style="color: var(--color-text-secondary); text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Assessment</a>
+        </nav>
+    </header>
+
+    <div class="hero-container">
+        <h1 class="reveal stagger-1">Intelligence for your<br><span style="color: var(--color-accent);">Career Path</span></h1>
+        <p class="subtitle reveal stagger-2">Advanced AI analysis of your professional profile to determine optimal career trajectory.</p>
+
+        <div class="options-grid">
+            <!-- Resume Analysis -->
+            <div class="card reveal stagger-1" onclick="document.getElementById('hiddenResumeInput').click()">
+                <div class="icon-box"><i data-lucide="file-text"></i></div>
+                <h3>Resume Analysis</h3>
+                <p>Vector analysis of your skills and experience to predict your best-fit role.</p>
+            </div>
+            <input type="file" id="hiddenResumeInput" accept=".pdf,.docx" style="display:none">
+
+            <!-- Skill Assessment -->
+            <a href="/hometest" class="card reveal stagger-2">
+                <div class="icon-box"><i data-lucide="activity"></i></div>
+                <h3>Skill Assessment</h3>
+                <p>Interactive 17-point profile evaluation across key technical domains.</p>
+            </a>
+
+            <!-- Dream Job Matcher -->
+            <div class="card reveal stagger-3" id="jobProbCard">
+                <div class="icon-box"><i data-lucide="target"></i></div>
+                <h3>Dream Job Matcher</h3>
+                <p>Calculate your alignment probability for specific target positions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="jobProbModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeJobModal()">&times;</button>
+            <h2 style="font-family: var(--font-heading); margin-bottom: 2rem;">Profile Alignment</h2>
+
+            <div class="input-group">
+                <label for="jobResumeInput">Document Upload (.pdf / .docx)</label>
+                <input type="file" id="jobResumeInput" accept=".pdf,.docx" style="display: block; width: 100%; color: var(--color-text-secondary);">
+                <span id="jobFileName" style="font-size: 0.7rem; color: var(--color-text-muted); margin-top: 0.5rem; display: block;"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="targetJobInput">Target Position</label>
+                <input type="text" id="targetJobInput" placeholder="e.g. Data Scientist">
+            </div>
+
+            <button class="btn-calculate" onclick="calculateJobProbability()">Begin Alignment Check</button>
+        </div>
+    </div>
+
+    <div class="loader-overlay" id="loadingScreen">
+        <div class="spinner"></div>
+        <p style="margin-top: 1.5rem; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--color-accent); text-transform: uppercase;">Synthesizing Profile Data...</p>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Reveal effect observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.classList.add('reveal');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Resume Upload Logic
+        const fileInput = document.getElementById('hiddenResumeInput');
+        const loader = document.getElementById('loadingScreen');
+
+        fileInput.addEventListener('change', async (e) => {
+            if (e.target.files.length === 0) return;
+            loader.style.display = 'flex';
+            const formData = new FormData();
+            formData.append('file', e.target.files[0]);
+
+            try {
+                const res = await fetch('/analyze_resume', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.success) {
+                    sessionStorage.setItem('careerResult', JSON.stringify(data));
+                    window.location.href = '/result';
+                } else {
+                    alert('Analysis Failed: ' + data.error);
+                    loader.style.display = 'none';
+                }
+            } catch (err) {
+                alert('Connection Error');
+                loader.style.display = 'none';
+            }
+        });
+
+        // Modal Logic
+        document.getElementById('jobProbCard').addEventListener('click', () => {
+            document.getElementById('jobProbModal').style.display = 'flex';
+        });
+
+        function closeJobModal() {
+            document.getElementById('jobProbModal').style.display = 'none';
+        }
+
+        document.getElementById('jobResumeInput').addEventListener('change', (e) => {
+            document.getElementById('jobFileName').textContent = e.target.files[0]?.name || '';
+        });
+
+        async function calculateJobProbability() {
+            const resumeFile = document.getElementById('jobResumeInput').files[0];
+            const dreamJob = document.getElementById('targetJobInput').value.trim();
+
+            if (!resumeFile || !dreamJob) {
+                alert('Profile document and target position required.');
+                return;
+            }
+
+            loader.style.display = 'flex';
+            const formData = new FormData();
+            formData.append('file', resumeFile);
+            formData.append('targetJob', dreamJob);
+
+            try {
+                const response = await fetch('/predict-job-probability', { method: 'POST', body: formData });
+                const data = await response.json();
+                if (data.success) {
+                    sessionStorage.setItem('jobProbResult', JSON.stringify(data));
+                    window.location.href = '/job-result';
+                } else {
+                    alert('Alignment Check Failed');
+                }
+            } catch (error) {
+                alert('Connection Error');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
