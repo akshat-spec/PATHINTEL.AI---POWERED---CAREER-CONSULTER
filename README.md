@@ -1,60 +1,56 @@
-# PATHINTEL.AI - AI Powered Career Consulter
+# PathIntel.ai — Intelligent Career Guidance
 
-PATHINTEL.AI is an advanced, AI-driven career guidance system designed to help students and professionals navigate their career paths with precision. By leveraging machine learning models and a robust web interface, the platform provides tailored recommendations based on skills, interests, and industry trends.
+PathIntel.ai is a premium, AI-driven career guidance ecosystem reimagined as a modern research journal. It blends high-performance machine learning with a disciplined, editorial-grade interface to help students navigate the complexities of the modern job market.
 
-## 🚀 Features
+## 🌌 Design Philosophy: "Structured Weightlessness"
+The platform follows a signature visual language inspired by NASA research journals and modern academic grids:
+- **Atmosphere**: Deep Space Navy (#0A0E1A) with Cool Cyan (#00D4FF) accents.
+- **Weight**: Elements that float, breathe, and hover within a strict 8pt grid.
+- **Typography**: Paired **Cormorant Garamond** (Editorial Headings) with **Sora** (Modern UI) and **DM Mono** (Technical Metadata).
 
-- **AI Career Prediction**: Recommends the best career paths based on user input and skill assessment.
-- **Job Probability Modeling**: Predicts the likelihood of success in various roles using a trained `RandomForestRegressor`.
-- **Dynamic Role Exploration**: Detailed pages for various specialists (AI/ML, Cyber Security, Data Science, etc.).
-- **Course Recommendations**: Suggests relevant courses to bridge skill gaps.
-- **Interactive Chatbot**: Integrated AI assistant for real-time guidance.
-- **Modern UI/UX**: Futuristic dark mode and cyberpunk light theme system.
+## 🚀 Core Features
+- **AI Career Hub**: Advanced resume analysis and personality-based skill assessments powered by Gemini AI and Scikit-learn.
+- **Premium Courses Grid**: A high-fidelity, interactive library of learning resources with staggered load animations and "lift" interactions.
+- **Intelligent Prediction**: Real-time job probability modeling using `RandomForestRegressor` to match skills with market demand.
+- **Knowledge Network**: A curated ecosystem of career paths ranging from AI/ML Engineering to Cyber Security.
+- **Unified Auth Suite**: A cohesive, secure login and registration system integrated with the platform's navy/cyan DNA.
 
 ## 🛠️ Technology Stack
+- **Legacy Foundation**: PHP 8.x for session management, routing, and core portal logic.
+- **AI Services**: Python (FastAPI/Flask) handling machine learning inference and LLM integrations.
+- **Styling**: Vanilla CSS3 with high-performance transitions and glassmorphism.
+- **Icons**: Lucide Iconography for clean, lightweight visuals.
+- **Database**: MySQL/MariaDB for structured student data and course tracking.
 
-- **Backend**: PHP (Main application logic) & Python (Machine learning models).
-- **Frontend**: HTML5, Vanilla CSS, JavaScript.
-- **Database**: MySQL (via XAMPP/MariaDB).
-- **AI/ML**: Python (Flask, Scikit-learn, Pandas, Gemini API).
-
-## 📂 Project Structure
-
-- `*.php`: Specialist role pages and core site logic.
-- `app.py`: Flask server for ML model integration.
-- `career_model.py` / `job_probability_model.py`: ML model training scripts.
-- `css/` & `js/`: Styling and dynamic frontend features.
-- `static/` & `templates/`: Assets and templates for the web interface.
-- `*.pkl`: Pre-trained machine learning models.
+## 📂 Architecture
+- `main.php`: The high-impact landing page and student portal.
+- `app.py`: The AI backend service (Career prediction & Resume analysis).
+- `courses.php`: The premium editorial course library.
+- `contact.php`: approachable "Open Desk" support interface.
+- `css/core.css`: The source of truth for the platform's design system.
+- `*.pkl`: Pre-trained machine learning models for career path probability.
 
 ## 🔧 Installation & Setup
 
-1. **Clone the repository**:
+### 🐳 Docker (Recommended)
+1. Build and run the entire stack:
    ```bash
-   git clone https://github.com/akshat-spec/PATHINTEL.AI---POWERED---CAREER-CONSULTER.git
+   docker-compose up --build
    ```
+2. Access the platform at `http://localhost:8080`.
 
-2. **PHP Setup**:
-   - Move the project folder to your `htdocs` directory (e.g., `C:\xampp\htdocs\career_guidance`).
-   - Start Apache and MySQL via XAMPP.
-   - Configure `config.php` with your database credentials.
-
-3. **Python Setup**:
-   - Install required dependencies:
-     ```bash
-     pip install -r requirements.txt
-     ```
-   - Run the Flask server:
-     ```bash
-     python app.py
-     ```
-
-4. **Access the App**:
-   - Open your browser and navigate to `http://localhost/career_guidance/main.php`.
+### 💻 Manual Setup
+1. **PHP/Web**: Place the repository in your `xampp/htdocs` folder and start Apache/MySQL.
+2. **Database**: Import `init.sql` (if provided) or configure your database in `config.php`.
+3. **Python AI Hub**:
+   ```bash
+   pip install -r requirements.txt
+   python app.py
+   ```
+4. Access the portal at `http://localhost/career_guidance/main.php`.
 
 ## 📄 License
-
 Internal Project - All Rights Reserved.
 
 ---
-*Created by [akshat-spec](https://github.com/akshat-spec)*
+*Reimagined by [akshat-spec](https://github.com/akshat-spec) & Antigravity AI*
