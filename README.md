@@ -53,4 +53,4 @@ The platform follows a signature visual language inspired by NASA research journ
 Internal Project - All Rights Reserved.
 
 ---
-*Reimagined by [akshat-spec](https://github.com/akshat-spec) & Antigravity AI*
+*Made by Akshat and Tanistha*
