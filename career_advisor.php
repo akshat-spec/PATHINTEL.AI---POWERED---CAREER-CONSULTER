@@ -261,11 +261,11 @@ if(file_exists('header.php')) {
         loader.style.display = 'block';
 
         const formData = new FormData();
-        formData.append('resume', fileInput.files[0]);
+        formData.append('file', fileInput.files[0]);
 
         try {
             // Call Python API
-            const response = await fetch('http://127.0.0.1:5000/analyze_resume', {
+            const response = await fetch('/analyze_resume', {
                 method: 'POST',
                 body: formData
             });
@@ -284,7 +284,7 @@ if(file_exists('header.php')) {
 
         } catch (error) {
             console.error(error);
-            alert("An error occurred: " + error.message + ". Make sure the Python server is running.");
+            alert("An error occurred: " + error.message);
             loader.style.display = 'none';
             uploadArea.style.display = 'block';
         }
@@ -312,14 +312,15 @@ if(file_exists('header.php')) {
 
         // 3. Careers
         const careerDiv = document.getElementById('careerData');
-        careerDiv.innerHTML = data.recommended_careers.map(c => `
+        const predictions = data.predictions || [];
+        careerDiv.innerHTML = predictions.map(c => `
             <div class="career-row">
                 <div class="career-header">
-                    <span>${c.career}</span>
-                    <span>${c.confidence}%</span>
+                    <span>${c.role}</span>
+                    <span>${c.score}%</span>
                 </div>
                 <div class="progress-track">
-                    <div class="progress-fill" style="width: ${c.confidence}%"></div>
+                    <div class="progress-fill" style="width: ${c.score}%"></div>
                 </div>
             </div>
         `).join('');
