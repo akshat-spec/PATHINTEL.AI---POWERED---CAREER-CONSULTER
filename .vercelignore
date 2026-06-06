@@ -1,9 +1,12 @@
 .venv/
+venv/
 __pycache__/
 dataset9000.csv
 dataset9000.data
 job_dataset.csv
 archive.zip
+archive/
 archive_extracted/
+frontend/
 *.docx
 *.sql
