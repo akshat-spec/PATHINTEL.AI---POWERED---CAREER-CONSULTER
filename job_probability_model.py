@@ -19,13 +19,15 @@ from sklearn.preprocessing import StandardScaler
 
 # Lazy loading flags
 SPACY_AVAILABLE = False
+SPACY_ATTEMPTED = False
 TRANSFORMER_AVAILABLE = False
 XGBOOST_AVAILABLE = False
 nlp = None
 
 def load_spacy():
-    global nlp, SPACY_AVAILABLE
-    if not SPACY_AVAILABLE:
+    global nlp, SPACY_AVAILABLE, SPACY_ATTEMPTED
+    if not SPACY_ATTEMPTED:
+        SPACY_ATTEMPTED = True
         try:
             import spacy
             from spacy.language import Language
@@ -87,16 +89,9 @@ class JobProbabilityPredictor:
         self.embedding_model = 'all-MiniLM-L6-v2'
         self._transformer = None
         
-        # XGBoost (Lazy)
-        global XGBOOST_AVAILABLE
-        self.XGBRegressor = None
-        try:
-            from xgboost import XGBRegressor
-            XGBOOST_AVAILABLE = True
-            self.XGBRegressor = XGBRegressor
-        except ImportError:
-            XGBOOST_AVAILABLE = False
-            print("⚠️ XGBoost not available for Job Predictor. Falling back to rule-based.")
+        # RandomForest (Default to reduce Vercel bundle size)
+        from sklearn.ensemble import RandomForestRegressor
+        self.model_class = RandomForestRegressor
         
         # Comprehensive skill database
         self.all_skills = self._load_skill_database()
@@ -229,7 +224,7 @@ class JobProbabilityPredictor:
         """Train ML model on dataset with augmentation"""
         try:
             print("\n" + "="*60)
-            print("TRAINING ENHANCED JOB PROBABILITY MODEL V2 (XGBOOST)")
+            print("TRAINING ENHANCED JOB PROBABILITY MODEL V2 (RANDOMFOREST)")
             print("="*60)
             
             # Load or create dataset
@@ -258,11 +253,75 @@ class JobProbabilityPredictor:
             X_features = []
             y = df['match_score'].values
             
-            # Pre-calculate embeddings for efficiency if needed, but here we'll do it per row in _extract_features
+            # Pre-calculate embeddings for efficiency
+            print("⏳ Pre-calculating all embeddings in batch...")
+            trans = self.transformer
+            if trans is not None and hasattr(trans, 'encode'):
+                print("⏳ Encoding resume texts...")
+                resumes_clean = [self.clean_text(str(x)) for x in df['resume_text'].tolist()]
+                resume_embeds = trans.encode(resumes_clean, show_progress_bar=True, batch_size=64)
+                
+                print("⏳ Encoding job titles...")
+                jobs_clean = [self.clean_text(str(x)) for x in df['job_title'].tolist()]
+                job_embeds = trans.encode(jobs_clean, show_progress_bar=True, batch_size=64)
+            else:
+                resume_embeds = None
+                job_embeds = None
+            
             for idx, row in df.iterrows():
-                if idx % 50 == 0:
-                    print(f"   Processing {idx}/{len(df)}...", end='\r')
-                features = self._extract_features(row['resume_text'], row['job_title'])
+                if idx % 1000 == 0:
+                    print(f"   Processing {idx}/{len(df)}...")
+                
+                # Semantic similarity using pre-calculated embeddings
+                semantic_sim = 0.1
+                if resume_embeds is not None and job_embeds is not None:
+                    if hasattr(self, 'util') and hasattr(self.util, 'cos_sim'):
+                        semantic_sim = float(self.util.cos_sim(resume_embeds[idx], job_embeds[idx])[0][0])
+                    else:
+                        u = resume_embeds[idx]
+                        v = job_embeds[idx]
+                        semantic_sim = float(np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v)))
+                
+                # Skill matching
+                resume_skills = self._extract_skills(row['resume_text'])
+                job_skills = self._extract_skills(row['job_title'])
+                
+                skill_overlap = len(set(resume_skills) & set(job_skills))
+                job_skill_count = max(len(job_skills), 1)
+                skill_match_ratio = skill_overlap / job_skill_count
+                
+                # Experience
+                exp_years = self._extract_years_experience(row['resume_text'])
+                
+                # Keyword Density
+                resume_clean = self.clean_text(row['resume_text'])
+                resume_words = len(resume_clean.split())
+                resume_density = len(resume_skills) / max(resume_words, 1)
+                
+                # Title/Role Match
+                title_match = 0
+                job_title_words = self.clean_text(row['job_title']).split()
+                for word in job_title_words:
+                    if word in resume_clean and len(word) > 3:
+                        title_match += 1
+                title_match_score = title_match / max(len(job_title_words), 1)
+        
+                # Bigram overlap
+                resume_bigrams = set(self._get_bigrams(resume_clean))
+                job_bigrams = set(self._get_bigrams(self.clean_text(row['job_title'])))
+                bigram_overlap = len(resume_bigrams & job_bigrams)
+                
+                features = [
+                    semantic_sim,        # 0
+                    skill_match_ratio,   # 1
+                    skill_overlap,       # 2
+                    exp_years,           # 3
+                    resume_density,      # 4
+                    title_match_score,   # 5
+                    bigram_overlap,      # 6
+                    len(resume_skills),  # 7
+                    len(job_skills)      # 8
+                ]
                 X_features.append(features)
             
             X = np.array(X_features)
@@ -273,24 +332,18 @@ class JobProbabilityPredictor:
             self.scaler = StandardScaler()
             X_scaled = self.scaler.fit_transform(X)
             
-            # 4. Train XGBoost Regressor
-            print(f"\nTraining XGBoost Regressor...")
+            # 4. Train RandomForest Regressor
+            print(f"\nTraining RandomForest Regressor...")
             X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
             
-            # Train XGBoost
-            if XGBOOST_AVAILABLE and self.XGBRegressor:
-                self.model = self.XGBRegressor(
-                    n_estimators=100,
-                    learning_rate=0.1,
-                    max_depth=5,
-                    objective='reg:squarederror',
-                    random_state=42
-                )
-                self.model.fit(X_train, y_train)
-            else:
-                # Simple Regression Fallback or Failure
-                print("🛑 Error: Cannot train/load model without XGBoost.")
-                return False
+            # Train RandomForest
+            from sklearn.ensemble import RandomForestRegressor
+            self.model = RandomForestRegressor(
+                n_estimators=100,
+                max_depth=8,
+                random_state=42
+            )
+            self.model.fit(X_train, y_train)
             
             # Evaluate
             train_score = self.model.score(X_train, y_train)
@@ -529,7 +582,7 @@ class JobProbabilityPredictor:
                 features = self._extract_features(resume_text, dream_job)
                 features_scaled = self.scaler.transform([features])
                 probability = self.model.predict(features_scaled)[0]
-                model_used = 'XGBoost Regressor v2.0'
+                model_used = 'RandomForest Regressor v2.0'
                 
                 # --- SHAP EXPLAINABILITY ---
                 try:

@@ -8,12 +8,14 @@ from sklearn.model_selection import train_test_split
 
 # Lazy loading flags
 SPACY_AVAILABLE = False
+SPACY_ATTEMPTED = False
 TRANSFORMER_AVAILABLE = False
 nlp = None
 
 def load_spacy():
-    global nlp, SPACY_AVAILABLE
-    if not SPACY_AVAILABLE:
+    global nlp, SPACY_AVAILABLE, SPACY_ATTEMPTED
+    if not SPACY_ATTEMPTED:
+        SPACY_ATTEMPTED = True
         try:
             import spacy
             from spacy.language import Language
@@ -69,20 +71,14 @@ class CareerModel:
         self.embedding_model = 'all-MiniLM-L6-v2'
         self._transformer = None
         
-        # XGBoost import (Lazy)
-        try:
-            from xgboost import XGBClassifier
-            self.classifier = XGBClassifier(
-                n_estimators=200,
-                learning_rate=0.05,
-                max_depth=6,
-                objective='multi:softprob',
-                random_state=42
-            )
-        except ImportError:
-            from sklearn.ensemble import RandomForestClassifier
-            self.classifier = RandomForestClassifier(n_estimators=100, random_state=42)
-            print("⚠️ Warning: XGBoost not available, falling back to RandomForest.")
+        # RandomForest (Default to reduce Vercel bundle size)
+        from sklearn.ensemble import RandomForestClassifier
+        self.classifier = RandomForestClassifier(
+            n_estimators=100,
+            max_depth=10,
+            random_state=42
+        )
+        print("Using RandomForestClassifier for CareerModel")
         
         # Comprehensive Skills List
         self.skills_db = [
@@ -185,7 +181,7 @@ class CareerModel:
             print(f"❌ Error: Dataset not found at {csv_path}")
             return False
 
-        print("⏳ Preparing Dataset for XGBoost...")
+        print("⏳ Preparing Dataset...")
         df = pd.read_csv(csv_path)
         
         # Check if 'Category' and 'Resume' columns exist
@@ -215,8 +211,8 @@ class CareerModel:
         # Train-Test Split
         X_train, X_test, y_train, y_test = train_test_split(X_embeddings, y_encoded, test_size=0.2, random_state=42)
         
-        print("⏳ Training XGBoost Classifier...")
-        self.classifier.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=False)
+        print("⏳ Training RandomForest Classifier...")
+        self.classifier.fit(X_train, y_train)
         
         from sklearn.calibration import CalibratedClassifierCV
         try:
