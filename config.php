@@ -8,13 +8,15 @@ define('DB_NAME', getenv('DB_NAME') ?: 'my_db');
  
 $link = null;
 
-try {
-    /* Attempt to connect to MySQL database */
-    $link = @mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-    if($link === false){
+if (function_exists('mysqli_connect')) {
+    try {
+        /* Attempt to connect to MySQL database */
+        $link = @mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        if($link === false){
+            $link = null;
+        }
+    } catch (Throwable $e) {
         $link = null;
     }
-} catch (Exception $e) {
-    $link = null;
 }
 ?>

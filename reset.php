@@ -18,9 +18,11 @@ $username_err=$new_password_err = $confirm_password_err = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
- 
-    // Check if username is empty
-    if(empty(trim($_POST["username"])))
+    if($link === null) {
+        $username_err = "Database is offline. Password reset unavailable.";
+    } else {
+        // Check if username is empty
+        if(empty(trim($_POST["username"])))
     {
         $username_err = "Please enter username.";
     } 
@@ -98,6 +100,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     
     // Close connection
     mysqli_close($link);
+    }
 }
 
 ?>
@@ -144,6 +147,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     <div class="wrapper">
         <h2>Reset Password</h2>
+        <?php if($link === null): ?>
+            <div class="alert alert-warning">
+                <strong>⚠️ Database Offline</strong><br>
+                Password reset is currently unavailable. You can bypass this and access the AI Hub in guest mode:
+                <a href="/ai-hub" class="btn btn-outline-primary btn-sm btn-block mt-2">Enter AI Hub as Guest</a>
+            </div>
+        <?php endif; ?>
         <p>Please fill out this form to reset your password.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> 
             <div class="form-group">
