@@ -32,7 +32,8 @@ app.add_middleware(
 )
 
 # --- CONFIGURATION ---
-UPLOAD_FOLDER = 'uploads'
+import tempfile
+UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), 'career_guidance_uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Mount Static Files
@@ -79,7 +80,7 @@ except Exception as e:
     job_predictor = None
 
 # --- HTML ROUTES ---
-@app.get("/", response_class=HTMLResponse)
+@app.get("/ai-hub", response_class=HTMLResponse)
 async def home(request: Request):
     """Main Hub (index.html)"""
     return templates.TemplateResponse("index.html", {"request": request})

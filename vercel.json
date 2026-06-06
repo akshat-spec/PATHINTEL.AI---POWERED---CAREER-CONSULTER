@@ -1,0 +1,44 @@
+{
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "*.php",
+      "use": "vercel-php@0.7.3"
+    },
+    {
+      "src": "css/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "js/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "img/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "fonts/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "static/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "^/$", "dest": "/main.php" },
+    { "src": "^/ai-hub$", "dest": "/app.py" },
+    { "src": "^/hometest$", "dest": "/app.py" },
+    { "src": "^/testafter$", "dest": "/app.py" },
+    { "src": "^/job-result$", "dest": "/app.py" },
+    { "src": "^/result$", "dest": "/app.py" },
+    { "src": "^/analyze_resume$", "dest": "/app.py" },
+    { "src": "^/predict$", "dest": "/app.py" },
+    { "src": "^/predict-job-probability$", "dest": "/app.py" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

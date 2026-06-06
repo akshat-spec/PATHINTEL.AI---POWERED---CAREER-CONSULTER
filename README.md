@@ -37,7 +37,7 @@ The platform follows a signature visual language inspired by NASA research journ
    ```bash
    docker-compose up --build
    ```
-2. Access the platform at `http://localhost:8080`.
+2. Access the platform at your deployed URL or `http://localhost:8000` (for Python serverless API).
 
 ### 💻 Manual Setup
 1. **PHP/Web**: Place the repository in your `xampp/htdocs` folder and start Apache/MySQL.
@@ -47,7 +47,7 @@ The platform follows a signature visual language inspired by NASA research journ
    pip install -r requirements.txt
    python app.py
    ```
-4. Access the portal at `http://localhost/career_guidance/main.php`.
+4. Access the portal via Vercel domain or `http://localhost/career_guidance/main.php`.
 
 ## 📄 License
 Internal Project - All Rights Reserved.

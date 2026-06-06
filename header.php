@@ -107,7 +107,7 @@
                         <?php if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true): ?>
                             <a href="login.php">Career Prediction</a>
                         <?php else: ?>
-                            <a href="http://localhost:5000/">Career Prediction</a>
+                            <a href="/ai-hub">Career Prediction</a>
                         <?php endif; ?>
                         <a href="courses.php">Courses</a>
                         <a href="blog.php">Knowledge Network</a>

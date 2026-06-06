@@ -29,7 +29,7 @@ session_start();
                     <p style="font-size: 1.1rem; color: var(--color-text-secondary); margin-bottom: var(--space-48); max-width: 480px;">
                         Welcome back, <?php echo htmlspecialchars($_SESSION["username"]); ?>. Ready to explore your next career milestone?
                     </p>
-                    <a href="http://localhost:5000/" class="btn-primary">
+                    <a href="/ai-hub" class="btn-primary">
                         Enter AI Hub <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
                     </a>
                 <?php endif; ?>
@@ -54,7 +54,7 @@ session_start();
                     <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-top: var(--space-16);">
                         Multi-vector analysis of your skills and interests to project the most viable professional roles.
                     </p>
-                    <a href="<?php echo (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) ? 'login.php' : 'http://localhost:5000/'; ?>" 
+                    <a href="<?php echo (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) ? 'login.php' : '/ai-hub'; ?>" 
                        style="display: inline-block; margin-top: var(--space-24); font-size: 0.75rem; font-weight: 600; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.1em;">
                        Explore Path <i data-lucide="arrow-up-right" style="width: 14px; height: 14px; vertical-align: middle;"></i>
                     </a>
