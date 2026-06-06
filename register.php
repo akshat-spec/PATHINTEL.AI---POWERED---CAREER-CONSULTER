@@ -8,11 +8,13 @@ $username_err = $password_err = $confirm_password_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Validate username
-    if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter a username.";
-    } else{
+    if($link === null) {
+        $username_err = "Database connection offline.";
+    } else {
+        // Validate username
+        if(empty(trim($_POST["username"]))){
+            $username_err = "Please enter a username.";
+        } else{
         // Prepare a select statement
         $sql = "SELECT id FROM users WHERE username = ?";
         
@@ -90,6 +92,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Close connection
     mysqli_close($link);
+    }
 }
 ?>
 
@@ -270,6 +273,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="panel-right">
         <div class="form-wrapper">
             <h2 class="form-title">Apply.</h2>
+
+            <?php if($link === null): ?>
+                <div style="background: rgba(0, 212, 255, 0.05); border-left: 3px solid var(--color-accent); padding: 20px; margin-bottom: 24px; font-size: 14px; color: #F8FAFC;">
+                    <h4 style="margin: 0 0 8px 0; color: var(--color-accent); font-family: var(--font-heading); font-size: 18px;">⚠️ Database Offline</h4>
+                    <p style="margin: 0 0 16px 0; opacity: 0.8; line-height: 1.4;">The database connection is currently unavailable. You can bypass registration and enter the AI Hub directly in guest mode.</p>
+                    <a href="/ai-hub" class="btn-submit" style="display: flex; align-items: center; justify-content: center; text-decoration: none; text-align: center; height: 44px; margin: 0; padding: 0 20px; font-size: 12px; line-height: 42px;">Enter AI Hub as Guest</a>
+                </div>
+            <?php endif; ?>
 
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="input-group" style="animation-delay: 100ms;">

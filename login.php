@@ -17,13 +17,15 @@ $username_err = $password_err = $login_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Check if username is empty
-    if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter username.";
-    } else{
-        $username = trim($_POST["username"]);
-    }
+    if($link === null) {
+        $login_err = "Database is offline. Please enter via Guest Mode.";
+    } else {
+        // Check if username is empty
+        if(empty(trim($_POST["username"]))){
+            $username_err = "Please enter username.";
+        } else{
+            $username = trim($_POST["username"]);
+        }
     
     // Check if password is empty
     if(empty(trim($_POST["password"]))){
@@ -82,6 +84,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Close connection
     mysqli_close($link);
+    }
 }
 ?>
 
@@ -279,7 +282,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="form-wrapper">
             <h2 class="form-title">Welcome Back.</h2>
 
-            <?php if(!empty($login_err)): ?>
+            <?php if($link === null): ?>
+                <div style="background: rgba(0, 212, 255, 0.05); border-left: 3px solid var(--color-accent); padding: 20px; margin-bottom: 24px; font-size: 14px; color: #F8FAFC;">
+                    <h4 style="margin: 0 0 8px 0; color: var(--color-accent); font-family: var(--font-heading); font-size: 18px;">⚠️ Database Offline</h4>
+                    <p style="margin: 0 0 16px 0; opacity: 0.8; line-height: 1.4;">The database connection is currently unavailable. You can bypass login and enter the AI Hub directly in guest mode.</p>
+                    <a href="/ai-hub" class="btn-submit" style="display: flex; align-items: center; justify-content: center; text-decoration: none; text-align: center; height: 44px; margin: 0; padding: 0 20px; font-size: 12px; line-height: 42px;">Enter AI Hub as Guest</a>
+                </div>
+            <?php elseif(!empty($login_err)): ?>
                 <div style="background: rgba(255, 77, 77, 0.05); border-left: 3px solid var(--color-error); padding: 12px 16px; margin-bottom: 24px; font-size: 14px; color: var(--color-error);">
                     <?php echo $login_err; ?>
                 </div>
